@@ -170,7 +170,6 @@ def adduser():
         except:
             con.rollback()
             msg = "User record: error in insert operation"
-
         finally:
             return render_template("result.html", msg=msg)
             con.close()
@@ -182,24 +181,20 @@ def deleteuserrecord():
     return render_template('delete.html')
 
 
+
 @app.route('/deluserrec', methods=['POST', 'GET'])
 def deluserrec():
     if request.method == 'POST':
         try:
-
             id = request.form['id']
-
             with sql.connect("database.db") as con:
                 cur = con.cursor()
-
                 cur.execute("DELETE FROM user WHERE ids=(?)", (id,))
-
                 con.commit()
                 msg = "result of delete operation: Record successfully deleted"
         except:
             con.rollback()
             msg = "Result of delete operation: error in delete operation"
-
         finally:
             return render_template("result.html", msg=msg)
             con.close()
@@ -216,10 +211,8 @@ def user():
         else:
             con = sql.connect("database.db")
             con.row_factory = sql.Row
-
             cur = con.cursor()
             cur.execute("SELECT * FROM user WHERE name=(?) AND pass=(?) ", (username, pw))
-
             rows = cur.fetchone();
             if (rows):
                 flag = 2
@@ -227,11 +220,9 @@ def user():
             return render_template('admin.html')
         elif flag == 2:
             return render_template('userhome.html', user=username)
-
         else:
             return "You are not logged in as username or password is incorrect <br><a href = '/login'></b>" + \
                    "click here to log in</b></a>"
-
     return render_template('userprehome.html')  # initial page for login/sign up
 
 
